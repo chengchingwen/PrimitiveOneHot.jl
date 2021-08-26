@@ -1,7 +1,7 @@
 # gpu
 
-import CUDA
-import CUDA: CuArray, CuArrayStyle, @allowscalar
+import .CUDA
+import .CUDA: CuArray, CuArrayStyle, @allowscalar
 import Adapt: WrappedArray
 
 const CuOneHotArray{K, N, var"N+1"} = OneHotArray{K, N, var"N+1", <: CuArray{OneHot{K}, N}}
@@ -74,4 +74,3 @@ function findminmax(minmax, binop, a::CuOneHotArray; init, dims)
         return (vals, inds)
     end
 end
-

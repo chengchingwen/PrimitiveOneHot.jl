@@ -52,3 +52,7 @@ function Base.:(*)(A::AbstractMatrix, oa::OneHot)
     size(A, 2) == onehotsize(oa) || throw(DimensionMismatch("Matrix column must correspond with OneHot size: $(size(A, 2)) != $(onehotsize(oa))"))
     return A[:, Int32(oa)]
 end
+
+@init @require Flux="587475ba-b771-5e3f-ad9e-33799f191a9c" begin
+    Flux.onecold(oa::AbstractOneHotArray) = reinterpret(Int32, oa)
+end
