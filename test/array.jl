@@ -12,6 +12,9 @@
   @test oa[:, 5, 5] == oa.onehots[5, 5]
   @test oa[:, 5, :] == OneHotArray(oa.onehots[5, :])
   @test oa[ind[1], 1, 1]
+  @test oa[5, :, 2] == collect(oa)[5, :, 2]
+
+  @test reinterpret(Int32, oa) == Int32.(ind)
 
   @test vcat(o, o) == vcat(collect(o), collect(o))
   @test hcat(o, o).onehots == [o,o]
