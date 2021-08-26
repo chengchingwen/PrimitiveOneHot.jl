@@ -27,6 +27,8 @@ const OneHotMatrix{K} = OneHotArray{K, 1}
 
 onehotsize(::OneHotArray{K}) where K = Int(K)
 
+Base.reinterpret(::Type{T}, oa::OneHotArray) where T = reinterpret(T, parent(oa))
+
 # array interface
 Base.size(oa::OneHotArray{K}) where K = (onehotsize(oa), size(oa.onehots)...)
 
