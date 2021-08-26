@@ -2,6 +2,12 @@ using ChainRulesCore
 ChainRulesCore.@non_differentiable OneHot(args...)
 ChainRulesCore.@non_differentiable OneHotArray(args...)
 
+function ChainRulesCore.rrule(::typeof(reinterpret), ::Type{T}, oa::AbstractOneHotArray) where T
+    return reinterpret(T, oa), function reinterpret_onehot_pullback(_)
+        (NoTangent(), NoTangent(), NoTangent())
+    end
+end
+
 # gather
 using NNlib: gather, scatter
 
@@ -35,8 +41,14 @@ function ChainRulesCore.rrule(::typeof(NNlib.scatter), op, src::AbstractArray, i
     return rrule(NNlib.scatter, op, src, _idx; kws...)
 end
 
-function Base.:(*)(A::AbstractMatrix, oa::AbstractOneHotArray)
+# fast mul
+
+function Base.:(*)(A::AbstractMatrix, oa::OneHotArray)
     size(A, 2) == onehotsize(oa) || throw(DimensionMismatch("Matrix column must correspond with OneHot size: $(size(A, 2)) != $(onehotsize(oa))"))
-    return A[:, reinterpret(Int32, oa)]
+    return gather(A, oa)
 end
 
+function Base.:(*)(A::AbstractMatrix, oa::OneHot)
+    size(A, 2) == onehotsize(oa) || throw(DimensionMismatch("Matrix column must correspond with OneHot size: $(size(A, 2)) != $(onehotsize(oa))"))
+    return A[:, Int32(oa)]
+end
