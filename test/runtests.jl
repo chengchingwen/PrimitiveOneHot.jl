@@ -4,6 +4,7 @@ using Test
 const tests = [
     "primitive",
     "array",
+    "op",
 ]
 
 @testset "PrimitiveOneHot.jl" begin

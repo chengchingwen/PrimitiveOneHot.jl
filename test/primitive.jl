@@ -72,4 +72,9 @@
 
   @test iszero(typemin(typeof(o)))
   @test Int(typemax(typeof(o))) == 10
+
+  @test argmax(o) == argmax(collect(o))
+  @test argmin(o) == argmin(collect(o))
+  @test argmin(one(o)) == 2
+
 end

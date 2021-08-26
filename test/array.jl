@@ -13,6 +13,7 @@
   @test oa[:, 5, :] == OneHotArray(oa.onehots[5, :])
   @test oa[ind[1], 1, 1]
   @test oa[5, :, 2] == collect(oa)[5, :, 2]
+  @test oa[5, :, :] == collect(oa)[5, :, :]
 
   @test reinterpret(Int32, oa) == Int32.(ind)
 

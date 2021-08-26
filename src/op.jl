@@ -3,6 +3,7 @@ ChainRulesCore.@non_differentiable OneHot(args...)
 ChainRulesCore.@non_differentiable OneHotArray(args...)
 
 # gather
+using NNlib: gather, scatter
 
 NNlib.gather(src::AbstractArray{Tsrc, Nsrc},
              idx::OneHotArray) where {Tsrc, Nsrc} = gather(src, reinterpret(Int32, idx))
@@ -35,7 +36,7 @@ function ChainRulesCore.rrule(::typeof(NNlib.scatter), op, src::AbstractArray, i
 end
 
 function Base.:(*)(A::AbstractMatrix, oa::AbstractOneHotArray)
-    size(A, 2) == onehotsize(B) || throw(DimensionMismatch("Matrix column must correspond with OneHot size: $(size(A, 2)) != $(onehotsize(oa))"))
-    gather(A, oa)
+    size(A, 2) == onehotsize(oa) || throw(DimensionMismatch("Matrix column must correspond with OneHot size: $(size(A, 2)) != $(onehotsize(oa))"))
+    return A[:, reinterpret(Int32, oa)]
 end
 
