@@ -23,11 +23,13 @@ Base.collect(oa::Union{CuOneHotArray, WrappedCuOneHotArray}) = collect(adapt(Arr
 Base.BroadcastStyle(::Type{<:CuOneHotArray{K, N}}) where {K, N} = CuArrayStyle{N+1}()
 
 # avoid array copy
-function CUDA.CuArray{T, N, B}(o::Union{CuOneHotArray, WrappedCuOneHotArray}) where {T, K, N, B, var"N+1", A <: CuArray}
-  dest = similar(o, T)
-  dest .= o
-  return dest
+function Base.copyto!(dst::CuArray, oa::OneHotArray)
+    dst .= oa
+    return dst
 end
+
+CUDA.CuArray{T, N, B}(oa::Union{CuOneHotArray, WrappedCuOneHotArray}) where {T, K, N, B, var"N+1", A <: CuArray} =
+    copyto!(similar(oa, T), oa)
 
 using Base.Cartesian
 
