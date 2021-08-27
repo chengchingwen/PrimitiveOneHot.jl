@@ -11,8 +11,6 @@ Base.print_array(io::IO, oa::Union{CuOneHotArray, WrappedCuOneHotArray}) = Base.
 
 Base._show_nonempty(io::IO, oa::Union{CuOneHotArray, WrappedCuOneHotArray}, prefix::String) =
     Base._show_nonempty(io, adapt(Array, oa), prefix)
-Base._show_empty(io::IO, oa::Union{CuOneHotArray, WrappedCuOneHotArray}) =
-    Base._show_empty(io, adapt(Array, oa))
 
 Base.convert(::Type{T}, oa::Union{CuOneHotArray, WrappedCuOneHotArray}) where {T<:Array} =
     Base.convert(T, adapt(Array, oa))
