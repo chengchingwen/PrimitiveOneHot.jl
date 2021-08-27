@@ -48,28 +48,31 @@ function Base.findmax(oa::CuOneHotArray; dims=:)
         is = map(f1, onehots, CartesianIndices(onehots))
         return (reshape(vs, 1, size(vs)...), reshape(is, 1, size(is)...))
     else
-        return findminmax(max, >, oa; init=false, dims=dims)
+        return findminmax(>, oa; init=false, dims=dims)
     end
 end
 
-function findminmax(minmax, binop, a::CuOneHotArray; init, dims)
+function findminmax(binop, a::CuOneHotArray; init, dims)
     function f(t1, t2)
         (x, i), (y, j) = t1, t2
 
+        iszero(i) && return t2
+        iszero(j) && return t1
         binop(x, y) && return t1
         x == y && return (x, Base.min(i, j))
         return t2
     end
 
     indx = ndims(a) == 1 ? (eachindex(a), 1) :
-                           (CartesianIndices(a), CartesianIndex{ndims(a)}())
+                           (CartesianIndices(a), zero(CartesianIndex{ndims(a)}))
+
     if dims == Colon()
         mapreduce(tuple, f, a, indx[1]; init = (init, indx[2]))
     else
         res = CUDA.GPUArrays._mapreduce(tuple, f, a, indx[1];
                                         init = (init, indx[2]), dims=dims)
-        @inbounds vals = map(x->x[1], res)
-        @inbounds inds = map(x->x[2], res)
+        vals = map(x->x[1], res)
+        inds = map(x->x[2], res)
         CUDA.unsafe_free!(res)
         return (vals, inds)
     end
