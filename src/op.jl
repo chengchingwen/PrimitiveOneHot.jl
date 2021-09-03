@@ -53,6 +53,17 @@ function Base.:(*)(A::AbstractMatrix, oa::OneHot)
     return A[:, Int32(oa)]
 end
 
+ChainRulesCore.rrule(config::RuleConfig, ::typeof(*), A::AbstractMatrix, oa::OneHotArray) = rrule_via_ad(config, gather, A, oa)
+
+function ChainRulesCore.rrule(config::RuleConfig, ::typeof(*), A::AbstractMatrix, oa::OneHot)
+    y, back = rrule_via_ad(config, getindex, A, :, Int32(oa))
+    function pullback(Ȳ)
+        Ā = back(Ȳ)[2]
+        return (NoTangent(), Ā, NoTangent())
+    end
+    return y, pullback
+end
+
 @init @require Flux="587475ba-b771-5e3f-ad9e-33799f191a9c" begin
     Flux.onecold(oa::AbstractOneHotArray) = reinterpret(Int32, oa)
 end

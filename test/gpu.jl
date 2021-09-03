@@ -24,4 +24,12 @@
     @test sprint(Base.print_array, coa) == sprint(Base.print_array, oa)
     @test sprint(Base._show_nonempty, coa, "") == sprint(Base._show_nonempty, oa, "")
 
+    using Zygote
+    using NNlibCUDA
+    ca = cu(randn(5,  30))
+    cb = cu(OneHotArray(30, ones(Int, 20)))
+
+    fa = zeros(Float32, size(ca))
+    fa[:, 1] .= 20
+    @test collect(Zygote.gradient(pca->sum(pca * cb), ca)[1]) == fa
 end
