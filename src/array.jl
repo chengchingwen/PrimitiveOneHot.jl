@@ -11,7 +11,7 @@ end
 OneHotArray(onehots::A) where {K, A<:AbstractArray{OneHot{K}}} = OneHotArray{K, ndims(onehots), ndims(onehots)+1, A}(onehots)
 OneHotArray{K}(indices::A) where {K, A<:AbstractArray{<:Union{Int32, UInt32}}} = OneHotArray(reinterpret(OneHot(K), indices))
 OneHotArray{K}(xs) where K = OneHotArray(OneHot(K).(xs))
-OneHotArray(k, xs) where {A<:AbstractArray{<:Integer}} = OneHotArray{UInt32(k)}(xs)
+OneHotArray(k, xs::A) where {A<:AbstractArray{<:Integer}} = OneHotArray{UInt32(k)}(xs)
 
 OneHotArray(k, o::OneHot) = OneHotArray([OneHot(k, o)])
 OneHotArray(o::OneHot) = OneHotArray([o])
