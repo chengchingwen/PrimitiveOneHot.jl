@@ -11,7 +11,7 @@ include("primitive.jl")
 include("array.jl")
 
 @init @require CUDA="052768ef-5323-5732-b1bb-66c8b64840ba" begin
-    include("gpu.jl")
+    CUDA.functional() && include("gpu.jl")
 end
 
 include("op.jl")
