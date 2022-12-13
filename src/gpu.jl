@@ -26,7 +26,7 @@ function Base.copyto!(dst::CuArray, oa::OneHotArray)
     return dst
 end
 
-CUDA.CuArray{T, N, B}(oa::Union{CuOneHotArray, WrappedCuOneHotArray}) where {T, K, N, B, var"N+1", A <: CuArray} =
+CUDA.CuArray{T, N, B}(oa::Union{CuOneHotArray, WrappedCuOneHotArray}) where {T, N, B} =
     copyto!(similar(oa, T), oa)
 
 using Base.Cartesian
