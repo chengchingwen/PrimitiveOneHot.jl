@@ -100,9 +100,16 @@ function Base.cat(xss::OneHotArray{K}...; dims) where K
     end
 end
 
+# view
+
+function Base.view(parent::OneHotArray, ::Colon, I...)
+    onehots = parent.onehots
+    v = view(onehots, I...)
+    return OneHotArray(v)
+end
+
 # reshape
 
-"reshape the underlying onehot array"
 function ohreshape(parent::OneHotArray{K}, dims) where K
     onehots = parent.onehots
     return OneHotArray(reshape(onehots, dims))
