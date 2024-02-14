@@ -72,4 +72,4 @@ jobs:
           using Documenter: DocMeta, doctest
           using PrimitiveOneHot
           DocMeta.setdocmeta!(PrimitiveOneHot, :DocTestSetup, :(using PrimitiveOneHot); recursive=true)
-          doctest(PrimitiveOneHot)'
+          doctest(PrimitiveOneHot)
