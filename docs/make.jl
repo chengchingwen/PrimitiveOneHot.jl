@@ -9,7 +9,7 @@ makedocs(;
     sitename="PrimitiveOneHot.jl",
     format=Documenter.HTML(;
         canonical="https://chengchingwen.github.io/PrimitiveOneHot.jl",
-        edit_link="main",
+        edit_link="master",
         assets=String[],
     ),
     pages=[
@@ -19,5 +19,5 @@ makedocs(;
 
 deploydocs(;
     repo="github.com/chengchingwen/PrimitiveOneHot.jl",
-    devbranch="main",
+    devbranch="master",
 )
