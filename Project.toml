@@ -1,23 +1,38 @@
 name = "PrimitiveOneHot"
 uuid = "13d12f88-f12b-451e-9b9f-13b97e01cc85"
 authors = ["chengchingwen <adgjl5645@hotmail.com> and contributors"]
-version = "0.1.4"
+version = "0.2.0"
 
 [deps]
 Adapt = "79e6a3ab-5dfb-504d-930d-738a2a938a0e"
 ChainRulesCore = "d360d2e6-b24c-11e9-a2a3-2a2ae2dbcce4"
+GPUArraysCore = "46192b85-c4d5-4398-a991-12ede77f4527"
+KernelAbstractions = "63c18a36-062a-441e-b654-da1e3ab1ce7c"
 NNlib = "872c559c-99b0-510c-b3b7-b6c96a88d5cd"
-Requires = "ae029012-a4dd-5104-9daa-d747884805df"
+
+[weakdeps]
+GPUArrays = "0c68f7d7-f131-5f86-a1c3-88cf8149b2d7"
+OneHotArrays = "0b1bfda6-eb8a-41d2-88d8-f5af5cad476f"
+
+[extensions]
+PrimitiveOneHotGPUArraysExt = "GPUArrays"
+PrimitiveOneHotOneHotArraysExt = "OneHotArrays"
 
 [compat]
 Adapt = "3.3, 4"
 ChainRulesCore = "1.12"
-NNlib = "0.8, 0.9"
-Requires = "1.1"
-julia = "1.6"
+GPUArrays = "10"
+GPUArraysCore = "0.1"
+KernelAbstractions = "0.9.2"
+NNlib = "0.9"
+OneHotArrays = "0.2"
+julia = "1.10"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+CUDA = "052768ef-5323-5732-b1bb-66c8b64840ba"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Zygote = "e88e6eb3-aa80-5325-afca-941959d7151f"
 
 [targets]
-test = ["Test"]
+test = ["Test", "CUDA", "LinearAlgebra", "Zygote"]

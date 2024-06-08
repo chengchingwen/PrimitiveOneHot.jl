@@ -63,7 +63,3 @@ function ChainRulesCore.rrule(config::RuleConfig, ::typeof(*), A::AbstractMatrix
     end
     return y, pullback
 end
-
-@init @require Flux="587475ba-b771-5e3f-ad9e-33799f191a9c" begin
-    Flux.onecold(oa::AbstractOneHotArray) = reinterpret(Int32, oa)
-end

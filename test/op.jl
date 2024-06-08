@@ -1,5 +1,6 @@
 @testset "Op" begin
     using NNlib: gather, gather!
+    using Zygote
     src = Float32[3, 4, 5, 6, 7]
     index = Int32[
         1 2 3 4;
@@ -20,4 +21,9 @@
     @test_throws DimensionMismatch randn(3,3) * oa
     @test w * oa == gather(w, oa)
 
+    a = randn(5,  30)
+    b = OneHotArray(30, ones(Int, 20))
+    y = zeros(Float32, size(a))
+    y[:, 1] .= 20
+    @test Zygote.gradient((a, b)->sum(a * b), a, b)[1] == y
 end
